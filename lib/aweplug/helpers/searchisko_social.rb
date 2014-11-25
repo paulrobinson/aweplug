@@ -9,8 +9,13 @@ module Aweplug
             when 'jboss.org'
               # No-op
             when 'google.com'
+              # Use 'link' for newly linked accounts, otherwise construct from the username
+              if account['link']
+                account['url'] = account['link']
+              else
+                account['url'] = "http://plus.google.com/+#{account['username']}"
+              end
               account['service'] = 'google-plus'
-              account['url'] = "http://plus.google.com/+#{account['username']}"
               account['icon'] = 'fa-google-plus'
               res[account['service']] = account
             else
@@ -45,8 +50,13 @@ module Aweplug
       private
 
       def default a
+        # Use 'link' for newly linked accounts, otherwise construct from the username
+        if a['link']
+          a['url'] = a['link']
+        else
+          a['url'] = "http://#{a['domain']}/#{a['username']}"
+        end
         a['service'] = a['domain'].chomp('.com')
-        a['url'] = "http://#{a['domain']}/#{a['username']}"
         a['icon'] = "fa-#{a['service']}"
         yield a if block_given?
       end
