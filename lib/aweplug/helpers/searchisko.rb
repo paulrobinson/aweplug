@@ -182,11 +182,11 @@ module Aweplug
       #   searchisko.post "rating/#{searchisko_document_id}", {rating: 3}
       #   # => Faraday Response
       def post path, params = {}
-        puts "XXXXXXXXXXXXX LOGGING XXXXXXXXXXXXX"
-        puts req
+        $LOG.warn "XXXXXXXXXXXXX LOGGING XXXXXXXXXXXXX"
+        $LOG.warn req
         resp = @faraday.post do |req|
           req.url "/v1/rest/" + path
-          puts req.url
+          $LOG.warn req.url
           req.headers['Content-Type'] = 'application/json'
           unless params.is_a? String
             req.body = params.to_json
