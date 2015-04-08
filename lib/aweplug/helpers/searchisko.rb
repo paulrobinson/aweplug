@@ -182,6 +182,8 @@ module Aweplug
       #   searchisko.post "rating/#{searchisko_document_id}", {rating: 3}
       #   # => Faraday Response
       def post path, params = {}
+        puts "XXXXXXXXXXXXX LOGGING XXXXXXXXXXXXX"
+        puts req
         resp = @faraday.post do |req|
           req.url "/v1/rest/" + path
           puts req.url
