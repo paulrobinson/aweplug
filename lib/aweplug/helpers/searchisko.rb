@@ -184,6 +184,7 @@ module Aweplug
       def post path, params = {}
         resp = @faraday.post do |req|
           req.url "/v1/rest/" + path
+          puts req.url
           req.headers['Content-Type'] = 'application/json'
           unless params.is_a? String
             req.body = params.to_json
