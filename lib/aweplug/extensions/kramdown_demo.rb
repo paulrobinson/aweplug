@@ -86,10 +86,15 @@ module Aweplug
 
           ids = []
           if @url.start_with? 'http'
+            puts 'HTTP: getting from:'
+            puts @url
             demos = YAML.load(@faraday.get(@url).body)
           else
+            puts 'FILE: getting from:'
+            puts @url
             demos = YAML.load(File.open(@url))
           end
+          puts demos
           if demos
             Parallel.each(demos, :in_threads => (site.build_threads || 0)) do |url|
               next if @excludes.include?(url)
