@@ -39,22 +39,18 @@ module Aweplug
           end
         end
 
-        def description(full_description=false)
-          max_length=150
+        def description
           d = @video["description"]
           out = ""
+          max_length = 150
           if d
-            if full_description
-              max_length = d.length
-            end
             i = 0
             d.scan(/[^\.!?]+[\.!?]\s/).map(&:strip).each do |s|
               i += s.length
+              out += s
+
               if i > max_length
-                out = s[0..max_length]
                 break
-              else
-                out += s
               end
             end
             # Deal with the case that the description has no sentence end in it
@@ -64,7 +60,9 @@ module Aweplug
           out
         end
 
-
+        def full_description
+          @video["description"]
+        end
 
         def detail_url
           "#{@site.base_url}/video/#{provider}/#{id}"
@@ -82,7 +80,7 @@ module Aweplug
           {
             :sys_title => title,
             :sys_description => description,
-            :full_description => description(true),
+            :full_description => full_description,
             :sys_url_view => detail_url,
             :author => author.nil? ? nil : author['username'],
             :contributors => cast.empty? ? nil : cast.collect {|c| c['username']},
@@ -109,7 +107,7 @@ module Aweplug
         def to_h
           hash = {}
           [:title, :tags, :cast, :duration, :modified_date, :published_date, :normalized_cast,
-           :height, :width, :description, :author, :detail_url, :normalized_author
+           :height, :width, :description, :author, :detail_url, :normalized_author, :full_description
           ].each {|k| hash[k] = self.send k}
           hash
         end
