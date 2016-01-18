@@ -62,10 +62,12 @@ module Aweplug
         unless build_no.nil?
           name = name + "-" + build_no
         end
-        unless ENV_PREFIX.nil?
-          Pathname.new(ENV_PREFIX).join(@ctx_path).join(name + ext).to_s
-        else
+        if ENV_PREFIX.nil?
           Pathname.new(@ctx_path).join(name + ext)
+        elsif ENV_PREFIX =~ /sites\/default\/files/ # we're running for drupal
+          Pathname.new(ENV_PREFIX).join(name + ext).to_s
+        else
+          Pathname.new(ENV_PREFIX).join(@ctx_path).join(name + ext).to_s
         end
       end
    
