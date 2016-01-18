@@ -32,7 +32,7 @@ Gem::Specification.new do |gem|
   #gem.add_dependency 'rugged', '~> 0.19'
   gem.add_dependency 'parallel', '> 1.0.0'
   gem.add_dependency 'xml-simple', '~> 1.1'
-  gem.add_dependency 'google-api-client', '~> 0.7'
+  gem.add_dependency 'google-api-client', '~> 0.7', '< 0.9'
   gem.add_dependency 'ruby-duration', '~> 3.2'
   gem.add_dependency 'kramdown', '~> 1.0.2'
   gem.add_dependency 'typhoeus', '~> 0.7'
