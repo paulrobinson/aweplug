@@ -1,5 +1,5 @@
 require 'digest'
-require 'yaml/store'
+require 'pstore'
 
 module Aweplug
   module Helpers
@@ -25,7 +25,7 @@ module Aweplug
           out_dir = Pathname.new(cdn_out_dir).join("cdn")
           control_dir = DIR
         end
-        @control = control_dir.join("cdn.yml")
+        @control = control_dir.join("cdn.store")
         @tmp_dir = out_dir.join ctx_path
         FileUtils.mkdir_p(File.dirname(@control))
         FileUtils.mkdir_p(@tmp_dir)
@@ -45,16 +45,16 @@ module Aweplug
 
       def version(name, ext, content)
         id = name + ext
-        yml = YAML::Store.new @control
-        yml.transaction do
-          yml[id] ||= { "build_no" => 0 }
+        pstore = PStore.new @control
+        pstore.transaction do
+          pstore[id] ||= { "build_no" => 0 }
           md5sum = content.md5sum
-          if yml[id]["md5sum"] != md5sum
-            yml[id]["md5sum"] = md5sum
-            build_no = yml[id]["build_no"] += 1
+          if pstore[id]["md5sum"] != md5sum
+            pstore[id]["md5sum"] = md5sum
+            build_no = pstore[id]["build_no"] += 1
             File.open(@tmp_dir.join(name + "-" + build_no.to_s + ext), 'w') { |file| file.write(content.read) }
           end
-          name(name, ext, yml[id]["build_no"].to_s)
+          name(name, ext, pstore[id]["build_no"].to_s)
         end
       end
 
