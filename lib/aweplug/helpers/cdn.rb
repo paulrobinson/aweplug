@@ -47,14 +47,14 @@ module Aweplug
         id = name + ext
         pstore = PStore.new @control
         pstore.transaction do
-          pstore[id] ||= { "build_no" => 0 }
+          pstore[id] ||= {:build_no => 0 }
           md5sum = content.md5sum
-          if pstore[id]["md5sum"] != md5sum
-            pstore[id]["md5sum"] = md5sum
-            build_no = pstore[id]["build_no"] += 1
+          if pstore[id][:md5sum] != md5sum
+            pstore[id][:md5sum] = md5sum
+            build_no = pstore[id][:build_no] += 1
             File.open(@tmp_dir.join(name + "-" + build_no.to_s + ext), 'w') { |file| file.write(content.read) }
           end
-          name(name, ext, pstore[id]["build_no"].to_s)
+          name(name, ext, pstore[id][:build_no].to_s)
         end
       end
 
