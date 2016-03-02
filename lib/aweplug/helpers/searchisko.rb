@@ -150,6 +150,7 @@ module Aweplug
       #
       # Returns a Faraday Response from the POST.
       def push_content content_type, content_id, params = {}
+        puts "XXX_ID: #{content_type}, #{content_id}"
         post "/content/#{content_type}/#{content_id}", params
       end
 
@@ -169,6 +170,7 @@ module Aweplug
       #
       # Returns a Faraday Response from the POST.
       def push_bulk_content content_type, content = {}
+        puts "Pushing bulk content of: #{content_type}"
         post "/content/#{content_type}", content
       end
 
